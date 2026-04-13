@@ -44,53 +44,119 @@ function setupEventListeners() {
 }
 
 // User Authentication
-function handleAuth(e) {
+let generatedOTP = null;
+let tempUserData = null;
+
+async function handleAuth(e) {
     e.preventDefault();
+
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
-    const isLogin = document.getElementById('authModalTitle').textContent.includes('Welcome');
-    
-    // Mock authentication
-    const users = {
-        login: [
-            { email: 'student@bup.edu.ph', password: '123456', name: 'Maria Santos', role: 'Student' },
-            { email: 'admin@bup.edu.ph', password: 'admin123', name: 'Library Admin', role: 'Admin' }
-        ],
-        register: []
-    };
-    
-    const user = users[isLogin ? 'login' : 'register'].find(u => u.email === email && u.password === password);
-    
-    if (user || !isLogin) {
-        currentUser = {
-            id: Date.now(),
-            name: user?.name || email.split('@')[0],
-            email: email,
-            role: user?.role || 'Student',
-            avatar: email[0].toUpperCase() + email[1].toUpperCase()
-        };
-        saveUser();
-        updateUI();
-        authModal.hide();
-        showToast(`${isLogin ? 'Welcome back' : 'Account created'}!`, 'success');
-    } else {
-        showToast('Invalid credentials', 'error');
+    const username = document.getElementById('authUsername').value;
+    const confirmPassword = document.getElementById('authConfirmPassword').value;
+    const otpInput = document.getElementById('authOTP').value;
+
+    const isRegister = document.getElementById('authModalTitle').textContent.includes('Create');
+
+    // ================= REGISTER =================
+    if (isRegister) {
+        if (password !== confirmPassword) {
+        showToast('Passwords do not match!', 'error');
+        return;
+     }
+
+        // STEP 1: SEND OTP
+        if (!generatedOTP) {
+            try {
+                const res = await fetch('http://localhost:3000/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    generatedOTP = data.otp; // ⚠️ for demo only
+                    tempUserData = { email, password, username };
+
+                    document.getElementById('otpField').style.display = 'block';
+
+                    showToast('OTP sent to your email!', 'success');
+                } else {
+                    showToast('Failed to send OTP', 'error');
+                }
+
+            } catch (err) {
+                showToast('Server error. Make sure backend is running.', 'error');
+            }
+
+            return;
+        }
+
+        // STEP 2: VERIFY OTP
+        if (otpInput == generatedOTP) {
+            currentUser = {
+                id: Date.now(),
+                name: username,
+                email: email,
+                role: 'Student'
+            };
+
+            saveUser();
+            updateUI();
+            authModal.hide();
+
+            generatedOTP = null;
+
+            showToast('Account created successfully!', 'success');
+        } else {
+            showToast('Invalid OTP', 'error');
+        }
+
+    } 
+    // ================= LOGIN =================
+    else {
+        showToast('Login not connected to database yet', 'info');
     }
 }
 
 function toggleAuthMode() {
     const title = document.getElementById('authModalTitle');
-    const toggleLink = document.getElementById('toggleAuthLink');
-    
-    if (title.textContent.includes('Welcome')) {
-        title.textContent = 'Create Account';
-        toggleLink.textContent = 'Sign in instead';
-    } else {
-        title.textContent = 'Welcome Back';
-        toggleLink.textContent = 'Create account';
-    }
-}
+    const usernameField = document.getElementById('usernameField');
+    const otpField = document.getElementById('otpField');
+    const authText = document.getElementById('authText');
+    const confirmPasswordField = document.getElementById('confirmPasswordField');
 
+    if (title.textContent.includes('Welcome')) {
+        // REGISTER MODE
+        title.textContent = 'Create Account';
+
+        authText.innerHTML = `
+            Have an account? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()">Sign in instead</a>
+        `;
+
+        usernameField.style.display = 'block';
+        confirmPasswordField.style.display = 'block';
+        otpField.style.display = 'none';
+
+    } else {
+        // LOGIN MODE
+        title.textContent = 'Welcome Back';
+
+        authText.innerHTML = `
+            New here? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()">Create account</a>
+        `;
+
+        usernameField.style.display = 'none';
+        confirmPasswordField.style.display = 'none';
+        otpField.style.display = 'none';
+    }
+    document.querySelector('#authForm button').textContent = 
+    title.textContent.includes('Create') ? 'Register' : 'Log In';
+}
 // User Management
 function loadUser() {
     const userData = localStorage.getItem('dearbup_user');
@@ -269,7 +335,15 @@ function savePosts() {
 function showAuthModal(mode) {
     document.getElementById('authEmail').value = '';
     document.getElementById('authPassword').value = '';
+    document.getElementById('authUsername').value = '';
+    document.getElementById('authOTP').value = '';
+
+    generatedOTP = null;
+
+    document.getElementById('otpField').style.display = 'none';
+
     if (mode === 'register') toggleAuthMode();
+
     authModal.show();
 }
 
