@@ -125,17 +125,17 @@ function toggleAuthMode() {
     const title = document.getElementById('authModalTitle');
     const usernameField = document.getElementById('usernameField');
     const otpField = document.getElementById('otpField');
+    const authText = document.getElementById('authText');
     const confirmPasswordField = document.getElementById('confirmPasswordField');
-
-    // reset OTP always when switching
-    generatedOTP = null;
-    document.getElementById('authOTP').value = '';
-
-    // KEEP password, don't reset it
 
     if (title.textContent.includes('Welcome')) {
         // REGISTER MODE
         title.textContent = 'Create Account';
+
+        authText.innerHTML = `
+            Have an account? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()">Sign in instead</a>
+        `;
 
         usernameField.style.display = 'block';
         confirmPasswordField.style.display = 'block';
@@ -145,6 +145,11 @@ function toggleAuthMode() {
         // LOGIN MODE
         title.textContent = 'Welcome Back';
 
+        authText.innerHTML = `
+            New here? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()">Create account</a>
+        `;
+
         usernameField.style.display = 'none';
         confirmPasswordField.style.display = 'none';
         otpField.style.display = 'none';
@@ -152,7 +157,6 @@ function toggleAuthMode() {
     document.querySelector('#authForm button').textContent = 
     title.textContent.includes('Create') ? 'Register' : 'Log In';
 }
-
 // User Management
 function loadUser() {
     const userData = localStorage.getItem('dearbup_user');
@@ -330,18 +334,15 @@ function savePosts() {
 // UI Utilities
 function showAuthModal(mode) {
     document.getElementById('authEmail').value = '';
+    document.getElementById('authPassword').value = '';
     document.getElementById('authUsername').value = '';
     document.getElementById('authOTP').value = '';
 
     generatedOTP = null;
+
     document.getElementById('otpField').style.display = 'none';
 
-    if (mode === 'register') {
-        const title = document.getElementById('authModalTitle');
-        if (!title.textContent.includes('Create')) {
-            toggleAuthMode();
-        }
-    }
+    if (mode === 'register') toggleAuthMode();
 
     authModal.show();
 }

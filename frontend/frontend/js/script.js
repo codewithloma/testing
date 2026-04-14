@@ -441,26 +441,6 @@ class DearBUP {
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.dearBUP = new DearBUP();
-
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.querySelector('.sidebar');
-
-    // Toggle sidebar
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-    });
-    
-
-    // ✅ CLOSE WHEN CLICKING OUTSIDE
-    document.addEventListener('click', (e) => {
-        if (
-            sidebar.classList.contains('active') &&
-            !sidebar.contains(e.target) &&
-            !menuToggle.contains(e.target)
-        ) {
-            sidebar.classList.remove('active');
-        }
-    });
 });
 
 // Additional global utilities

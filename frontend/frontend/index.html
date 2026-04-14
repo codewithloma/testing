@@ -8,56 +8,45 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="js/script.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <!-- Sidebar -->
-<div class="sidebar fixed top-0 left-0 h-screen w-[280px] bg-ash gray/95 backdrop-blur-xl border-r border-black/10 flex flex-col z-50 shadow-lg">
+    <!-- Sidebar (unchanged) -->
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <div class="logo">
+                 <a href=""><img src="images/Logo.svg" alt="" class="logo-img" ></a>
+                <span>DearBUP</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
 
-    <!-- Top -->
-    <div class="p-8 pb-0">
-        <div class="flex items-center gap-3 text-[#d65d64] text-2xl font-extrabold tracking-tight mb-10">
-            <img src="images/Logo.svg" class="w-[50px] h-[50px]" />
-            <span>DearBUP</span>
+            <a href="#" class="nav-item" data-page="notifications">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </a>
+
+            </a>
+            <a href="#" class="nav-item" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="nav-item" data-page="organizations">
+                <i class="fas fa-users"></i>
+                <span>Organizations</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item write-post" id="writePostBtn">
+                <i class="fas fa-feather-alt"></i>
+                <span>Write</span>
+            </a>
         </div>
     </div>
 
-    <!-- Nav -->
-    <nav class="flex-1 px-6 space-y-2">
-
-        <a href="#" class="flex items-center gap-5 px-4 py-3 rounded-xl text-gray-500 font-medium hover:text-[#d65d64] hover:bg-[#e0c0ac]/20 transition nav-item active">
-            <i class="fas fa-home w-6 text-lg"></i>
-            <span>Home</span>
-        </a>
-
-        <a href="#" class="flex items-center gap-5 px-4 py-3 rounded-xl text-gray-500 font-medium hover:text-[#d65d64] hover:bg-[#e0c0ac]/20 transition nav-item">
-            <i class="fas fa-bell w-6 text-lg"></i>
-            <span>Notifications</span>
-        </a>
-
-        <a href="#" class="flex items-center gap-5 px-4 py-3 rounded-xl text-gray-500 font-medium hover:text-[#d65d64] hover:bg-[#e0c0ac]/20 transition nav-item">
-            <i class="fas fa-user w-6 text-lg"></i>
-            <span>Profile</span>
-        </a>
-
-        <a href="#" class="flex items-center gap-5 px-4 py-3 rounded-xl text-gray-500 font-medium hover:text-[#d65d64] hover:bg-[#e0c0ac]/20 transition nav-item">
-            <i class="fas fa-users w-6 text-lg"></i>
-            <span>Organizations</span>
-        </a>
-    </nav>
-
-    <!-- Bottom Button -->
-    <div class="p-6">
-        <a href="#" id="writePostBtn"
-           class="flex items-center justify-center gap-3 w-full py-4 rounded-2xl text-white font-semibold bg-gradient-to-r from-[#e06a72] to-[#d65d64] shadow-lg hover:shadow-xl hover:-translate-y-1 transition">
-            <i class="fas fa-feather-alt"></i>
-            Write
-        </a>
-    </div>
-</div>
-        <button id="menuToggle" class="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
     <!-- Main Content -->
     <div class="main-content">
 
@@ -102,6 +91,8 @@
 
             <!-- Welcome Section (unchanged) -->
             <div class="welcome-section">
+                <h1>Welcome to DearBUP</h1>
+                <p>Feel. Write. Share. your Bicol University-Polangui story</p>
                 <button class="cta-button" id="startWriting">Start Writing</button>
             </div>
 
