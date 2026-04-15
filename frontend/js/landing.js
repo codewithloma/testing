@@ -50,9 +50,11 @@ let tempUserData = null;
 async function handleAuth(e) {
     e.preventDefault();
 
-    const email = document.getElementById('authEmail').value;
+    const email = document.getElementById('authEmail').value.trim();
     const password = document.getElementById('authPassword').value;
-    const username = document.getElementById('authUsername').value;
+    const username = document.getElementById('authUsername').value.trim();
+    const studentId = document.getElementById('authStudentId').value.trim().toUpperCase();
+    const course = document.getElementById('authCourse').value.trim();
     const confirmPassword = document.getElementById('authConfirmPassword').value;
     const otpInput = document.getElementById('authOTP').value;
 
@@ -60,10 +62,26 @@ async function handleAuth(e) {
 
     // ================= REGISTER =================
     if (isRegister) {
+        // Enhanced Validation
         if (password !== confirmPassword) {
-        showToast('Passwords do not match!', 'error');
-        return;
-     }
+            showToast('Passwords do not match!', 'error');
+            return;
+        }
+
+        if (!username) {
+            showToast('Username is required!', 'error');
+            return;
+        }
+        
+        if (!studentId) {
+            showToast('Student ID is required!', 'error');
+            return;
+        }
+        
+        if (!course) {
+            showToast('Course is required!', 'error');
+            return;
+        }
 
         // STEP 1: SEND OTP
         if (!generatedOTP) {
@@ -77,8 +95,8 @@ async function handleAuth(e) {
                 const data = await res.json();
 
                 if (data.success) {
-                    generatedOTP = data.otp; // ⚠️ for demo only
-                    tempUserData = { email, password, username };
+                    generatedOTP = data.otp;
+                    tempUserData = { email, password, username, studentId, course };
 
                     document.getElementById('otpField').style.display = 'block';
 
@@ -100,6 +118,8 @@ async function handleAuth(e) {
                 id: Date.now(),
                 name: username,
                 email: email,
+                studentId: studentId,
+                course: course.charAt(0).toUpperCase() + course.slice(1).toLowerCase(), // Proper case
                 role: 'Student'
             };
 
@@ -109,7 +129,7 @@ async function handleAuth(e) {
 
             generatedOTP = null;
 
-            showToast('Account created successfully!', 'success');
+            showToast(`Welcome to DearBUP, ${username}! ✨`, 'success');
         } else {
             showToast('Invalid OTP', 'error');
         }
@@ -124,33 +144,54 @@ async function handleAuth(e) {
 function toggleAuthMode() {
     const title = document.getElementById('authModalTitle');
     const usernameField = document.getElementById('usernameField');
-    const otpField = document.getElementById('otpField');
+    const studentIdField = document.getElementById('studentIdField');
+    const courseField = document.getElementById('courseField');
     const confirmPasswordField = document.getElementById('confirmPasswordField');
+    const otpField = document.getElementById('otpField');
+    const submitBtn = document.querySelector('#authForm button');
+    const authText = document.getElementById('authText');
+    const toggleLink = document.getElementById('toggleAuthLink');
 
-    // reset OTP always when switching
+    // Reset OTP when switching modes
     generatedOTP = null;
     document.getElementById('authOTP').value = '';
 
-    // KEEP password, don't reset it
-
-    if (title.textContent.includes('Welcome')) {
-        // REGISTER MODE
+    if (title.textContent.includes('Welcome') || title.textContent.includes('Back')) {
+        // SWITCH TO REGISTER MODE
         title.textContent = 'Create Account';
-
+        submitBtn.innerHTML = '<i class="fas fa-mobile-alt me-2"></i>Send OTP';
+        
+        // SHOW REGISTER FIELDS
         usernameField.style.display = 'block';
+        studentIdField.style.display = 'block';
+        courseField.style.display = 'block';
         confirmPasswordField.style.display = 'block';
         otpField.style.display = 'none';
 
-    } else {
-        // LOGIN MODE
-        title.textContent = 'Welcome Back';
+        // UPDATE BOTTOM TEXT: "Have an Account? Log in"
+        authText.innerHTML = `
+            Have an account? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()" id="toggleAuthLink">Log in</a>
+        `;
 
+    } else {
+        // SWITCH TO LOGIN MODE
+        title.textContent = 'Welcome Back';
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Log In';
+
+        // HIDE REGISTER FIELDS
         usernameField.style.display = 'none';
+        studentIdField.style.display = 'none';
+        courseField.style.display = 'none';
         confirmPasswordField.style.display = 'none';
         otpField.style.display = 'none';
+
+        // UPDATE BOTTOM TEXT: "New here? Create account"
+        authText.innerHTML = `
+            New here? 
+            <a href="#" class="text-primary fw-semibold" onclick="toggleAuthMode()" id="toggleAuthLink">Create account</a>
+        `;
     }
-    document.querySelector('#authForm button').textContent = 
-    title.textContent.includes('Create') ? 'Register' : 'Log In';
 }
 
 // User Management
@@ -331,6 +372,8 @@ function savePosts() {
 function showAuthModal(mode) {
     document.getElementById('authEmail').value = '';
     document.getElementById('authUsername').value = '';
+    document.getElementById('authStudentId').value = '';
+    document.getElementById('authCourse').value = '';
     document.getElementById('authOTP').value = '';
 
     generatedOTP = null;

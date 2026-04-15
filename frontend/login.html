@@ -154,38 +154,50 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-    <form id="authForm">
-        <div class="mb-3">
-            <label class="form-label fw-semibold">Email</label>
-            <input type="email" class="form-control rounded-3" id="authEmail" required>
-        </div>
+ <form id="authForm">
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Email</label>
+        <input type="email" class="form-control rounded-3" id="authEmail" required>
+    </div>
 
-        <!-- USERNAME (only for register) -->
-        <div class="mb-3" id="usernameField" style="display:none;">
-            <label class="form-label fw-semibold">Username</label>
-            <input type="text" class="form-control rounded-3" id="authUsername">
-        </div>
+    <!-- USERNAME (only for register) -->
+    <div class="mb-3" id="usernameField" style="display:none;">
+        <label class="form-label fw-semibold">Username</label>
+        <input type="text" class="form-control rounded-3" id="authUsername">
+    </div>
 
-        <div class="mb-3">
-            <label class="form-label fw-semibold">Password</label>
-            <input type="password" class="form-control rounded-3" id="authPassword" required>
-        </div>
+    <!-- STUDENT ID (only for register) -->
+    <div class="mb-3" id="studentIdField" style="display:none;">
+        <label class="form-label fw-semibold">Student ID</label>
+        <input type="text" class="form-control rounded-3" id="authStudentId">
+    </div>
 
-        <div class="mb-3" id="confirmPasswordField" style="display:none;">
-            <label class="form-label fw-semibold">Confirm Password</label>
-            <input type="password" class="form-control rounded-3" id="authConfirmPassword" placeholder="Confirm password">
-        </div>
+    <!-- COURSE (only for register) -->
+    <div class="mb-3" id="courseField" style="display:none;">
+        <label class="form-label fw-semibold">Course</label>
+        <input type="text" class="form-control rounded-3" id="authCourse">
+    </div>
 
-        <!-- OTP FIELD -->
-        <div class="mb-3" id="otpField" style="display:none;">
-            <label class="form-label fw-semibold">Enter OTP</label>
-            <input type="text" class="form-control rounded-3" id="authOTP" placeholder="6-digit code">
-        </div>
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Password</label>
+        <input type="password" class="form-control rounded-3" id="authPassword" required>
+    </div>
 
-        <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold">
-            Log In
-        </button>
-    </form>
+    <div class="mb-3" id="confirmPasswordField" style="display:none;">
+        <label class="form-label fw-semibold">Confirm Password</label>
+        <input type="password" class="form-control rounded-3" id="authConfirmPassword" placeholder="Confirm password">
+    </div>
+
+    <!-- OTP FIELD -->
+    <div class="mb-3" id="otpField" style="display:none;">
+        <label class="form-label fw-semibold">Enter OTP</label>
+        <input type="text" class="form-control rounded-3" id="authOTP" placeholder="6-digit code">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold">
+        Log In
+    </button>
+</form>
                     <div class="text-center mt-4 pt-3 border-top">
                         <small class="text-muted" id="authText">
                             New here? 

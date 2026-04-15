@@ -181,7 +181,22 @@ body {
     min-height: 100vh;
     line-height: 1.6;
 }
+/* Add to landing.css */
+#studentIdField input {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
 
+#courseField input {
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+#studentIdField label::before,
+#courseField label::before {
+    font-size: 0.9em;
+}
 /* Navigation */
 .navbar {
     background: rgba(255, 255, 255, 0.95) !important;
